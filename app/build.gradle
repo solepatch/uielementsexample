@@ -1,0 +1,56 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
+android {
+    compileSdkVersion project.ext.get('compileSdkVersion')
+    buildToolsVersion project.ext.get('buildToolsVersion')
+
+    defaultConfig {
+        minSdkVersion project.ext.get('minSdkVersion')
+        targetSdkVersion project.ext.get('targetSdkVersion')
+        versionCode project.ext.get('versionCode')
+        versionName project.ext.get('versionName')
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            testCoverageEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility project.ext.get('javaVersion')
+        targetCompatibility project.ext.get('javaVersion')
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            testLogging {
+                showStackTraces = true
+                exceptionFormat = "full"
+                events 'passed'
+            }
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    testCompile 'junit:junit:4.12'
+}
